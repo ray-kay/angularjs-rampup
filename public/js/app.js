@@ -89,27 +89,71 @@
         }]
     }];
 
-    app.controller('GalleryController', function(){
-        this.current = 0;
-
-        this.setCurrent = function(newCurrent){
-            this.current = newCurrent ? newCurrent : 0;
-        };
-    });
-
     app.controller("StoreController", function(){
         this.products = gems;
     });
 
-    app.controller('TabController', function(){
-        this.tab = 1;
+    app.controller('ReviewController', function(){
+        this.review = {};
 
-        this.setTab = function(newTab){
-            this.tab = newTab;
+        this.addReview = function(product){
+            this.review.createdOn = Date.now();
+            product.reviews.push(this.review);
+            this.review = {};
         };
+    });
 
-        this.isSet = function(currentTab){
-            return this.tab === currentTab;
+    app.directive("productDescription", function() {
+        return {
+            restrict: 'E',
+            templateUrl: "partials/product-description.html"
+        };
+    });
+
+    app.directive("productSpecs", function() {
+        return {
+            restrict: 'A',
+            templateUrl: "partials/product-specs.html"
+        };
+    });
+
+    app.directive("productReviews", function() {
+        return {
+            restrict: 'E',
+            templateUrl: "partials/product-reviews.html"
+        };
+    });
+
+    app.directive('productTabs', function(){
+        return {
+            restrict: 'E',
+            templateUrl: 'partials/product-tabs.html',
+            controller: function(){
+                this.tab = 1;
+
+                this.isSet = function(checkTab) {
+                    return this.tab === checkTab;
+                };
+
+                this.setTab = function(setTab) {
+                    this.tab = setTab;
+                };
+            },
+            controllerAs: 'tab'
+        };
+    });
+
+    app.directive('productGallery', function(){
+        return {
+            restrict: 'E',
+            templateUrl: 'partials/product-gallery.html',
+            controller: function(){
+                this.current = 0;
+                this.setCurrent = function(imageNumber){
+                    this.current = imageNumber || 0;
+                };
+            },
+            controllerAs: 'gallery'
         };
     });
 
